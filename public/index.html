@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Battle</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Movie Battle</h1>
+    <p>Select your favorite movie from each pair to get personalized recommendations.</p>
+  </header>
+
+  <main id="game-container">
+    <section class="movie-pair">
+      <div class="movie-card" id="movie1"></div>
+      <div class="movie-card" id="movie2"></div>
+    </section>
+    <p id="round-count">Round 1 of 30</p>
+  </main>
+
+  <section id="results-section" class="hidden">
+    <h2>Your Top Genres:</h2>
+    <div id="genre-chart">  <canvas id="genreBarChart"></canvas></div>
+    <h3>Recommended Movies:</h3>
+    <div id="recommendations"></div>
+  </section>
+  <script src="script.js"></script>
+</body>
+</html>
