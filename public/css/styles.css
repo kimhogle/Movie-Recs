@@ -1,0 +1,46 @@
+#faceoff {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.movie-card {
+  border: 2px solid black;
+  padding: 20px;
+  cursor: pointer;
+  width: 40%;
+  text-align: center;
+}
+:root {
+  --bg-color: white;
+  --text-color: black;
+}
+
+:root.dark-mode {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#mode-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: none;
+  background: #444;
+  color: white;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+:root.dark-mode #mode-toggle {
+  background: #ddd;
+  color: #121212;
+}
