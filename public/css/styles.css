@@ -1,3 +1,24 @@
+main {
+  display: grid;
+  grid-template-rows: auto;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  main {
+    grid-template-rows: auto;
+  }
+}
+
+
+
+
+
+
+
 #faceoff {
   display: flex;
   justify-content: space-around;
@@ -14,6 +35,7 @@
   flex-direction: column;
   align-items: center; /* ✅ Center image horizontally */
   height: 400px; /* Consistent height */
+  justify-content: space-between;
   box-sizing: border-box;
 }
 
@@ -109,12 +131,6 @@ body {
   margin: 20px auto;
 }
 
-/* For smaller screens, reduce height */
-@media (max-width: 600px) {
-  .chart-container {
-    height: 200px;
-  }
-}
 
 
 
@@ -127,4 +143,15 @@ header {
 }
 #mode-toggle:hover {
   background: #666;
+}
+
+
+
+
+/* Responsive adjustments for movie cards */
+/* For smaller screens, reduce height */
+@media (max-width: 600px) {
+  .chart-container {
+    height: 200px;
+  }
 }

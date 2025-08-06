@@ -4,35 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/styles.css">
-    <title>Document</title>
+    <title>Movie Face-Off</title>
 </head>
 <body>
-<header><button id="mode-toggle">🌙 Dark Mode</button></header>
+<header>
+  <button id="mode-toggle">🌙 Dark Mode</button>
+</header>
 
+<main class="main">
+  <p id="random-movie"></p>
+  
+  <div id="faceoff">
+    <div id="movie-a" class="movie-card"></div>
+    <div id="movie-b" class="movie-card"></div>
+  </div>
 
-        <main class="main">
-<ul id="movie-list"></ul>
-<p id="random-movie"></p>
-<div id="faceoff">
-  <div id="movie-a" class="movie-card"></div>
-  <div id="movie-b" class="movie-card"></div>
-</div>
+  <div id="round-counter"></div>
+  <p id="winner-log"></p>
 
-<div id="round-counter"></div>
+  <div class="chart-container">
+    <canvas id="resultsChart"></canvas>
+  </div>
 
-<p id="winner-log"></p>
-
-<div class="chart-container"></div><canvas id="resultsChart"></canvas></div>
-<button id="play-again-btn" style="display: none;">Play Again</button>
-
-
+  <button id="play-again-btn" style="display: none;">Play Again</button>
+  <section id="recommendations"></section>
+</main>
 
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="index.js"></script>
-        </main>
-
-<!-- Chart.js CDN -->
-<script src="/public/index.js"></script>
 </body>
 </html>
