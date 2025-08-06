@@ -6,6 +6,7 @@ fetch("/api/movies/popular")
     // Show the random movie title on the page
 const randomMovieElement = document.getElementById("random-movie");
 randomMovieElement.textContent = `Random pick: ${randomMovie.title} (${randomMovie.release_date})`;
+ 
 
     // Display all movies in a list
     data.results.forEach((movie) => {
@@ -14,7 +15,7 @@ randomMovieElement.textContent = `Random pick: ${randomMovie.title} (${randomMov
       movieList.appendChild(li);
     });
 
-    // ✅ Pick a random movie
+   // ✅ Pick a random movie
     const randomIndex = Math.floor(Math.random() * data.results.length);
     const randomMovie = data.results[randomIndex];
     console.log("🎬 Random movie:", randomMovie);
@@ -25,7 +26,7 @@ randomMovieElement.textContent = `Random pick: ${randomMovie.title} (${randomMov
 
 
 
-  let moviePool = [];
+let moviePool = [];
 let winners = [];
 let round = 1;
 const maxRounds = 30;
@@ -91,9 +92,82 @@ function showResults() {
   winnerLog.innerHTML = `<h3>Your Picks:</h3><ol>${winners
     .map((m) => `<li>${m.title}</li>`)
     .join("")}</ol>`;
+
+
+
+
+
+
+
+
+  // ✅ Show the canvas
+  const chartCanvas = document.getElementById("resultsChart");
+  chartCanvas.style.display = "block";
+
+  // ✅ Prepare data for chart
+  const counts = winners.reduce((acc, movie) => {
+    acc[movie.title] = (acc[movie.title] || 0) + 1;
+    return acc;
+  }, {});
+
+  const labels = Object.keys(counts);
+  const data = Object.values(counts);
+
+  console.log("Chart labels:", labels);
+  console.log("Chart data:", data);
+
+  // ✅ Destroy previous chart if exists
+  if (window.resultsChartInstance) {
+    window.resultsChartInstance.destroy();
+  }
+
+  // ✅ Create new chart
+  const ctx = chartCanvas.getContext("2d");
+  window.resultsChartInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Votes",
+          data: data,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: "Your Movie Face-Off Results",
+          font: {
+            size: 18,
+          },
+        },
+        legend: { display: false },
+      },
+      scales: {
+        y: { beginAtZero: true },
+      },
+    },
+  });
 }
-// Show the random movie title on the page
-const randomMovieElement = document.getElementById("random-movie");
+
+
+
+
+
+// ✅ Show "Play Again" button
+const playAgainBtn = document.getElementById('play-again-btn');
+
+// When results are ready and shown:
+playAgainBtn.style.display = 'inline-block';  // or 'block' depending on layout
+playAgainBtn.addEventListener('click', () => {
+  window.location.reload();
+});
+
+
+
 
 
 

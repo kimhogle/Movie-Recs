@@ -8,9 +8,64 @@
   border: 2px solid black;
   padding: 20px;
   cursor: pointer;
-  width: 40%;
+  width: 45%; /* Two cards side by side on desktop */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ Center image horizontally */
+  height: 400px; /* Consistent height */
+  box-sizing: border-box;
+}
+
+.movie-card h2 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  word-wrap: break-word;
+  flex-shrink: 0; /* Prevent title from shrinking */
+}
+
+.movie-card img {
+  max-height: 250px; /* Prevent too tall image */
+  width: auto; /* Maintain aspect ratio */
+  max-width: 100%; /* Don’t overflow card */
+  object-fit: contain; /* ✅ Show entire image */
+}
+
+
+
+
+
+
+
+
+
+
+#movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+#resultsChart {
+  margin: 20px auto;
+  display: block;
+  max-width: 600px;
+  color-scheme: light dark;
+  
+}
+#random-movie {
+  font-size: 1.5rem;
+  margin: 20px;
   text-align: center;
 }
+
+
+
+
+
+
+
+
 :root {
   --bg-color: white;
   --text-color: black;
@@ -43,4 +98,33 @@ body {
 :root.dark-mode #mode-toggle {
   background: #ddd;
   color: #121212;
+}
+
+
+
+.chart-container {
+  width: 90%;
+  max-width: 700px;  /* limit size on big screens */
+  height: 300px;     /* base height for normal screens */
+  margin: 20px auto;
+}
+
+/* For smaller screens, reduce height */
+@media (max-width: 600px) {
+  .chart-container {
+    height: 200px;
+  }
+}
+
+
+
+
+header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  background: var(--bg-color);
+}
+#mode-toggle:hover {
+  background: #666;
 }

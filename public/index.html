@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-<button id="mode-toggle">🌙 Dark Mode</button>
+<header><button id="mode-toggle">🌙 Dark Mode</button></header>
 
 
         <main class="main">
@@ -22,13 +22,17 @@
 
 <p id="winner-log"></p>
 
-<!-- Link your JS at the end -->
-<script src="index.js"></script>
+<div class="chart-container"></div><canvas id="resultsChart"></canvas></div>
+<button id="play-again-btn" style="display: none;">Play Again</button>
 
+
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="index.js"></script>
         </main>
 
-
-
+<!-- Chart.js CDN -->
 <script src="/public/index.js"></script>
 </body>
 </html>
