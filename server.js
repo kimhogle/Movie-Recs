@@ -13,6 +13,8 @@ app.use(express.static("./public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+// ✅ Get top-rated movies
 app.get("/api/movies/top-rated", async (req, res) => {
   const apiKey = process.env.TMDB_API_KEY;
   const url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`;
@@ -42,6 +44,7 @@ app.get("/api/movies/by-genre/:genreId", async (req, res) => {
   }
 });
 
+// ✅ Get similar movies by movie ID
 app.get("/api/movies/similar/:id", async (req, res) => {
   const apiKey = process.env.TMDB_API_KEY;
   const { id } = req.params;
@@ -60,6 +63,7 @@ app.get("/api/movies/similar/:id", async (req, res) => {
 });
 
 
+// ✅ Get movie details by ID (for genres)
 app.get("/api/movies/details/:id", async (req, res) => {
   const apiKey = process.env.TMDB_API_KEY;
   const { id } = req.params;

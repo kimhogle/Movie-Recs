@@ -75,7 +75,7 @@ async function fetchRecommendations() {
   const genreCounts = {};
   const seenMovieIds = new Set([...moviePool.map(m => m.id), ...winners.map(m => m.id)]);
 
-  // Count genres from winners to find the top genre (optional if you want)
+  // Count genres from winners to find the top genre
   for (const movie of winners) {
     const response = await fetch(`/api/movies/details/${movie.id}`);
     const data = await response.json();
@@ -85,7 +85,7 @@ async function fetchRecommendations() {
     });
   }
 
-  // Instead of using top genre to fetch by genre, fetch similar movies for each winner
+  // Fetch similar movies for each winner
   const recommendationSet = new Map();
 
   for (const movie of winners) {
@@ -221,12 +221,20 @@ Promise.all(winners.map(movie =>
     },
   });
 
+
+
+
+
+
+
   // ✅ Play Again Button
   const playAgainBtn = document.getElementById("play-again-btn");
   playAgainBtn.style.display = "inline-block";
   playAgainBtn.addEventListener("click", () => {
     window.location.reload();
   });
+
+
 
 
   // ✅ Show Recommendations
@@ -247,6 +255,8 @@ recContainer.innerHTML = "<h3 class='rec-title'>Recommended Movies for You:</h3>
     });
   });
 }
+
+
 
 // ✅ Dark Mode Toggle
 const toggleBtn = document.getElementById("mode-toggle");
