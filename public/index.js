@@ -5,7 +5,6 @@ fetch("/api/movies/top-rated")
     const randomIndex = Math.floor(Math.random() * data.results.length);
     const randomMovie = data.results[randomIndex];
     const randomMovieElement = document.getElementById("random-movie");
-    randomMovieElement.textContent = `Random pick: ${randomMovie.title} (${randomMovie.release_date})`;
   })
   .catch((error) => console.error("Error fetching movies:", error));
 
@@ -29,6 +28,8 @@ fetch("/api/movies/top-rated")
   })
   .catch((err) => console.error("Error:", err));
 
+
+  
 // ✅ Pick two random movies
 function pickTwoRandomMovies() {
   const shuffled = moviePool.sort(() => 0.5 - Math.random());
@@ -69,33 +70,112 @@ function startFaceOff() {
   };
 }
 
-// ✅ Fetch Recommendations
+// ✅ Fetch Recommendations based on similar movies (genre/content)
 async function fetchRecommendations() {
-  const recommendationSet = new Map();
+  const genreCounts = {};
+  const seenMovieIds = new Set([...moviePool.map(m => m.id), ...winners.map(m => m.id)]);
 
-  for (let movie of winners) {
-    const response = await fetch(`/api/movies/recommendations/${movie.id}`);
+  // Count genres from winners to find the top genre (optional if you want)
+  for (const movie of winners) {
+    const response = await fetch(`/api/movies/details/${movie.id}`);
     const data = await response.json();
 
-    data.results.forEach(rec => {
-      if (!recommendationSet.has(rec.id)) {
-        recommendationSet.set(rec.id, rec);
-      }
+    data.genres.forEach((genre) => {
+      genreCounts[genre.id] = (genreCounts[genre.id] || 0) + 1;
     });
   }
 
-  return Array.from(recommendationSet.values());
+  // Instead of using top genre to fetch by genre, fetch similar movies for each winner
+  const recommendationSet = new Map();
+
+  for (const movie of winners) {
+    try {
+      const response = await fetch(`/api/movies/similar/${movie.id}`);
+      const data = await response.json();
+
+      data.results.forEach(rec => {
+        if (!seenMovieIds.has(rec.id) && !recommendationSet.has(rec.id)) {
+          recommendationSet.set(rec.id, rec);
+        }
+      });
+    } catch (err) {
+      console.error(`Failed to fetch similar movies for ID ${movie.id}`, err);
+    }
+  }
+
+  return Array.from(recommendationSet.values()).slice(0, 10); // Top 10 unique recommendations
 }
+
+
+
+
+
 
 // ✅ Show Results & Chart
 function showResults() {
   movieA.style.display = "none";
   movieB.style.display = "none";
-  roundCounter.textContent = "Face-Off Complete!";
-  winnerLog.innerHTML = `<h3>Your Picks:</h3><ol>${winners
-    .map((m) => `<li>${m.title}</li>`)
-    .join("")}</ol>`;
+  roundCounter.textContent = "Challenge completed! Results in the graph below.";
 
+ // ✅ Genre Breakdown Chart
+const genreCounts = {};
+const genreLabelsMap = {};
+
+Promise.all(winners.map(movie =>
+  fetch(`/api/movies/details/${movie.id}`).then(res => res.json())
+)).then(detailsArray => {
+  detailsArray.forEach(detail => {
+    detail.genres.forEach(genre => {
+      genreCounts[genre.name] = (genreCounts[genre.name] || 0) + 1;
+    });
+  });
+
+  const genreLabels = Object.keys(genreCounts);
+  const genreData = Object.values(genreCounts);
+
+  // Create a new container + canvas for the genre chart
+  const genreContainer = document.createElement("div");
+  genreContainer.className = "chart-container";
+
+  const genreChartCanvas = document.createElement("canvas");
+  genreChartCanvas.id = "genreChart";
+
+  genreContainer.appendChild(genreChartCanvas);
+
+  // Insert after the resultsChart container
+  const resultsChartContainer = document.querySelector(".chart-container");
+  resultsChartContainer.parentNode.insertBefore(genreContainer, resultsChartContainer.nextSibling);
+
+  const genreCtx = genreChartCanvas.getContext("2d");
+  new Chart(genreCtx, {
+    type: "bar",
+    data: {
+      labels: genreLabels,
+      datasets: [{
+        label: "Votes by Genre",
+        data: genreData,
+        backgroundColor: "#f15025",
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: "Genre Breakdown of Your Picks",
+          font: { size: 18 },
+        },
+        legend: { display: false },
+      },
+      scales: {
+        y: { beginAtZero: true },
+      },
+    },
+  });
+});
+
+
+  
   // ✅ Chart
   const chartCanvas = document.getElementById("resultsChart");
   chartCanvas.style.display = "block";
@@ -148,10 +228,13 @@ function showResults() {
     window.location.reload();
   });
 
+
   // ✅ Show Recommendations
   fetchRecommendations().then(recommendations => {
+    document.getElementById("instructions").style.display = "none";
     const recContainer = document.getElementById("recommendations");
-    recContainer.innerHTML = "<h3>Recommended Movies for You:</h3>";
+recContainer.innerHTML = "<h3 class='rec-title'>Recommended Movies for You:</h3>";
+
 
     recommendations.slice(0, 10).forEach(movie => {
       const div = document.createElement("div");
@@ -171,14 +254,14 @@ const root = document.documentElement;
 
 if (localStorage.getItem("theme") === "dark") {
   root.classList.add("dark-mode");
-  toggleBtn.textContent = "☀️ Light Mode";
+  toggleBtn.textContent = "Light Mode";
 } else {
-  toggleBtn.textContent = "🌙 Dark Mode";
+  toggleBtn.textContent = "Dark Mode";
 }
 
 toggleBtn.addEventListener("click", () => {
   root.classList.toggle("dark-mode");
   const isDark = root.classList.contains("dark-mode");
-  toggleBtn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+  toggleBtn.textContent = isDark ? "Light Mode" : "Dark Mode";
   localStorage.setItem("theme", isDark ? "dark" : "light");
 });

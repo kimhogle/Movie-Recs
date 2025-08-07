@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/styles.css">
-    <title>Movie Face-Off</title>
+    <title>Movie Challenge</title>
 </head>
 <body>
 <header>
-  <button id="mode-toggle">🌙 Dark Mode</button>
+  <button id="mode-toggle">Dark Mode</button>
 </header>
 
 <main class="main">
   <p id="random-movie"></p>
-  
+  <h1>Movie Challenge</h1>
+<p id="instructions">Simply choose which movie you like most to receive a list of recommendations.</p>
+
   <div id="faceoff">
     <div id="movie-a" class="movie-card"></div>
     <div id="movie-b" class="movie-card"></div>
@@ -26,8 +28,10 @@
     <canvas id="resultsChart"></canvas>
   </div>
 
+
   <button id="play-again-btn" style="display: none;">Play Again</button>
-  <section id="recommendations"></section>
+<div id="recommendations" class="recommendations-container"></div>
+
 </main>
 
 <!-- Chart.js CDN -->

@@ -27,17 +27,50 @@ app.get("/api/movies/top-rated", async (req, res) => {
 });
 
 
-app.get("/api/movies/recommendations/:id", async (req, res) => {
+// ✅ Get movies by genre ID
+app.get("/api/movies/by-genre/:genreId", async (req, res) => {
   const apiKey = process.env.TMDB_API_KEY;
-  const { id } = req.params;
-  const url = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}&language=en-US&page=1`;
+  const { genreId } = req.params;
+  const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${genreId}&language=en-US&page=1&sort_by=vote_average.desc`;
 
   try {
     const response = await fetch(url);
     const data = await response.json();
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch recommendations" });
+    res.status(500).json({ error: "Failed to fetch movies by genre" });
+  }
+});
+
+app.get("/api/movies/similar/:id", async (req, res) => {
+  const apiKey = process.env.TMDB_API_KEY;
+  const { id } = req.params;
+  const url = `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}&language=en-US&page=1`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return res.status(response.status).json({ error: "Failed to fetch similar movies" });
+    }
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch similar movies" });
+  }
+});
+
+
+app.get("/api/movies/details/:id", async (req, res) => {
+  const apiKey = process.env.TMDB_API_KEY;
+  const { id } = req.params;
+  const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en-US`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch movie details" });
   }
 });
 

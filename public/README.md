@@ -1,6 +1,4 @@
-# 🎬 Movie Recs: Personalized Recommendations Matcher
-
-This interactive web app lets users vote on movies to discover their top genres and receive personalized movie recommendations using real-time data from TheMovieDB (TMDB) API.
+This interactive web app lets users vote on movies to discover their top genres and receive personalized movie recommendations using real-time data from TheMovieDatabase (TMDB) API.
 
 
 
